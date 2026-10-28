@@ -43,8 +43,9 @@ export async function markSentAction(fd: FormData): Promise<void> {
   if (!found || found.lead.draft === null) return;
   const sent = markSent(found.lead, draft, new Date());
   if (!sent) return;
-  await insertMessage(sent.message);
+  // Lead first: if the message insert fails, the draft is already null and a retry is a no-op.
   await saveLead(sent.lead);
+  await insertMessage(sent.message);
   refresh(id);
 }
 
@@ -58,16 +59,19 @@ export async function addMessageAction(fd: FormData): Promise<void> {
   if (!found) return;
   const { lead } = found;
   const now = new Date();
-  await saveLead({ ...lead, lastContactDate: todayIST(now) });
-  await insertMessage({
-    leadId: id,
-    sentAt: nowIST(now),
-    sender,
-    senderName: sender === "rep" ? lead.rep : lead.name,
-    text,
-  });
-  await reassess(id);
-  refresh(id);
+  try {
+    await saveLead({ ...lead, lastContactDate: todayIST(now) });
+    await insertMessage({
+      leadId: id,
+      sentAt: nowIST(now),
+      sender,
+      senderName: sender === "rep" ? lead.rep : lead.name,
+      text,
+    });
+    await reassess(id);
+  } finally {
+    refresh(id);
+  }
 }
 
 export async function addLeadAction(_prev: AddLeadState, fd: FormData): Promise<AddLeadState> {
