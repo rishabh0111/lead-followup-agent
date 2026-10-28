@@ -2,6 +2,7 @@
  * Assesses every sample lead once through the live agent and writes data/seed.json.
  * Run: npm run seed                  (all leads, writes the file)
  *      npm run seed -- --only L001,L005   (quick check, writes nothing)
+ *      npm run seed -- --only L001 --merge   (re-assess listed IDs, update them in data/seed.json)
  */
 import ExcelJS from "exceljs";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
@@ -64,6 +65,14 @@ async function main() {
   }
   const byRules = leads.filter((l) => l.assessedBy === "rules").length;
   console.log(`${leads.length} leads, ${byRules} by rules`);
+  if (only && process.argv.includes("--merge")) {
+    const file = "data/seed.json";
+    const cur: SeedFile = JSON.parse(readFileSync(file, "utf8"));
+    cur.leads = cur.leads.map((l) => leads.find((n) => n.id === l.id) ?? l);
+    writeFileSync(file, JSON.stringify(cur, null, 2) + "\n");
+    console.log("merged into data/seed.json");
+    return;
+  }
   if (only) {
     console.log("--only: no file written");
     return;
