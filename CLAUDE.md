@@ -11,12 +11,12 @@
 
 ## Testing
 
-- Framework: none (stack not chosen yet, see `docs/DECISIONS.md` #1)
-- Test: none
-- Single test file: none
-- Lint: none
-- Typecheck: none
-- Build: none
+- Framework: Vitest 5
+- Test: `npm test`
+- Single test file: `npx vitest run <path>`
+- Lint: `npm run lint`
+- Typecheck: `npx tsc --noEmit`
+- Build: `npm run build`
 
 ## Design System
 
