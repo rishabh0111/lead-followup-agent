@@ -21,12 +21,12 @@ OUTPUT (JSON with these keys)
 tag: "Hot", "Warm" or "Cold".
 reason: one line under 120 characters naming the specific signal from the chat.
 requested_date: only when the buyer asked to be contacted on or by a date. Write it as YYYY-MM-DD, resolving relative words ("Monday", "next week", "in 10 days") against today's date above. Otherwise null.
-draft: the message the rep will send. Use the buyer's language and tone (English or Hinglish). 2 to 4 lines, one clear ask, answer any open objection, and sign with the rep's first name. Never invent prices or discounts. Never promise a delivery date.
+draft: the message the rep will send. Use the buyer's language and tone (English or Hinglish). 2 to 4 lines, separated by \\n inside the JSON string, with the rep's first name alone on the last line as the signature. The body ends with one clear ask: a direct question or a request for one concrete next step, with a date when relevant (not a statement of what the buyer can do). Answer any open objection. Never invent prices or discounts. Never promise a delivery date.
 
 EXAMPLE
 Today's date: 2026-10-20. Rep: Neha Kapoor. Days since last contact: 3 days.
 BUYER: Quote mil gaya. Rate thoda zyada lag raha hai. Diwali ke baad 3 Nov ko call karna.
-Output: {"tag":"Warm","reason":"Finds rate high, asked for a call on 3 Nov","requested_date":"2026-11-03","draft":"Namaste Sir, quote dekhne ke liye shukriya. Rate ke baare mein main dekhta hoon ki kaunsa model aapke volume ke liye sahi baithta hai. Kya 3 Nov ko 11 baje call kar sakti hoon? - Neha"}`;
+Output: {"tag":"Warm","reason":"Finds rate high, asked for a call on 3 Nov","requested_date":"2026-11-03","draft":"Namaste Sir, quote dekhne ke liye shukriya.\\nRate ke baare mein main dekhti hoon ki kaunsa model aapke volume ke liye sahi baithta hai.\\nKya 3 Nov ko 11 baje call kar sakti hoon?\\nNeha"}`;
 
 const istTime = new Intl.DateTimeFormat("en-CA", {
   timeZone: "Asia/Kolkata",

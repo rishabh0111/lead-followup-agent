@@ -2,6 +2,14 @@ import { expect, test } from "vitest";
 import { buildPrompt } from "./prompt";
 import { makeLead, msg } from "./test-helpers";
 
+test("buildPrompt marks an empty chat and still gives today and days since contact", () => {
+  const p = buildPrompt(makeLead({ lastContactDate: "2026-10-20", source: "IndiaMART" }), [], "2026-10-28");
+  expect(p).toContain("(no chat yet)");
+  expect(p).toContain("8 days");
+  expect(p).toContain("IndiaMART");
+  expect(p).not.toContain("REP:");
+});
+
 test("buildPrompt carries today, days since contact and REP/BUYER lines", () => {
   const lead = makeLead({ lastContactDate: "2026-10-23" });
   const chat = [
