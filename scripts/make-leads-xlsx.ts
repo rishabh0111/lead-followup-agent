@@ -24,7 +24,7 @@
  * L011  Cold  no reply to last 2 rep messages (Hinglish) 2026-10-20  -           2026-10-30
  * L012  Cold  budget freeze                              2026-10-22  -           2026-11-01
  * L013  Warm  no chat (IndiaMART, 2 days)                 2026-10-26  -           2026-10-29
- * L014  Warm  no chat (Cold call, 2 days)                2026-10-26  -           2026-10-29
+ * L014  Cold  no chat (Cold call, 2 days)                2026-10-26  -           2026-11-05
  * L015  Warm  "call me on 29 Oct" (Hinglish)             2026-10-23  2026-10-29  2026-10-29
  * L016  Warm  no chat (IndiaMART, 3 days)                2026-10-25  -           2026-10-28
  * L017  Warm  price too high; compares with SealRite     2026-10-09  -           2026-10-12
