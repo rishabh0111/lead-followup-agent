@@ -1,4 +1,8 @@
-import type { Lead } from "./types";
+import type { Lead, Message, Sender } from "./types";
+
+export function msg(sender: Sender, text: string, sentAt = "2026-10-27T05:00:00Z"): Message {
+  return { leadId: "L001", sentAt, sender, senderName: sender === "rep" ? "Amit Verma" : "Buyer", text };
+}
 
 export function makeLead(over: Partial<Lead> = {}): Lead {
   return {
