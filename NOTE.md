@@ -6,17 +6,17 @@ A Next.js app on Neon Postgres. The Today list shows each rep's overdue and due-
 
 ## How the agent decides
 
-The model (Gemini Flash-Lite) reads the lead's fields and chat and returns a tag (Hot, Warm or Cold), a one-line reason, a requested date if the buyer gave one, and a draft in the buyer's language. The prompt asks it to look at buying signals, open objections, unanswered rep messages and how long the buyer has been silent. Its answer is checked against a schema in code.
+The model (GPT-OSS 120B on Groq) reads the lead's fields and chat and returns a tag (Hot, Warm or Cold), a one-line reason, a requested date if the buyer gave one, and a draft in the buyer's language. The prompt asks it to look at buying signals, open objections, unanswered rep messages and how long the buyer has been silent. Groq forces its answer to match a JSON schema, and code checks it again.
 
 The model does not pick the follow-up date. Code does: the requested date if there is one, otherwise Hot today, Warm +3 days, Cold +10 days, never before today. Marking a draft sent moves the follow-up date by +1, +3 or +10 days.
 
-The agent runs when the seed is built, and live only when a message or a lead is added. It never runs on page load, save draft or mark sent. Simple rules run only when the model fails: a buying signal means Hot, two unanswered rep messages or 14 or more days of buyer silence means Cold, anything else is Warm. A lead that already has a result keeps it and shows "agent unavailable".
+The agent runs when the seed is built, and live only when a message or a lead is added. It never runs on page load, save draft or mark sent. If the call hits a rate limit or a server error it is retried once. Simple rules run only when the model still fails: a buying signal means Hot, two unanswered rep messages or 14 or more days of buyer silence means Cold, anything else is Warm. A lead that already has a result keeps it and shows "agent unavailable".
 
 Writes are capped (200 leads, 100 messages per lead) because the demo is public with no login.
 
 ## AI tools used
 
-Gemini Flash-Lite runs inside the app. Claude Code was used to build it.
+GPT-OSS 120B on Groq runs inside the app. I started on Gemini Flash-Lite and switched after it returned "high demand" errors during testing. Claude Code was used to build it.
 
 ## Next
 

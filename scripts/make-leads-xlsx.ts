@@ -3,41 +3,41 @@
  * Run: npx tsx scripts/make-leads-xlsx.ts
  *
  * Everything here is invented. Phones use +91 00000 000NN (not a real prefix).
- * Written as if today were DATA_DATE (2026-10-28).
+ * Written as if today were DATA_DATE (2026-10-29).
  *
  * Each lead is scheduled as schedule(intendedTag, requestedDate, lastContact):
  * Hot +0, Warm +3, Cold +10 days, or the requested date if there is one.
  * No-chat leads are assessed as of DATA_DATE, so their follow-up is today +
- * the tag offset: Warm 2026-10-31, and the stale ones (L021, L022) Cold 2026-11-07.
+ * the tag offset: Warm 2026-11-01, and the stale ones (L021, L022) Cold 2026-11-08.
  *
  * ID    tag   case                                      last        requested   follow-up
- * L001  Hot   asks for quote; delivery and payment terms 2026-10-28  -           2026-10-28
- * L002  Hot   says "send PI" (Hinglish)                  2026-10-28  -           2026-10-28
- * L003  Warm  no chat (WhatsApp, 0 days)                 2026-10-28  -           2026-10-31
- * L004  Warm  asks for brochure and video; no timeline   2026-10-28  -           2026-10-31
- * L005  Warm  "will discuss internally"                  2026-10-25  -           2026-10-28
- * L006  Warm  no chat (Website form, 3 days)             2026-10-25  -           2026-10-31
- * L007  Warm  MAIN-FLOW lead: no buying signal, recent   2026-10-27  -           2026-10-30
- * L008  Warm  no chat (Referral, 2 days)                 2026-10-26  -           2026-10-31
- * L009  Cold  "not now, next quarter"; budget used up    2026-10-24  -           2026-11-03
- * L010  Warm  no chat (Referral, 1 day)                  2026-10-27  -           2026-10-31
- * L011  Cold  no reply to last 2 rep messages (Hinglish) 2026-10-20  -           2026-10-30
- * L012  Cold  budget freeze                              2026-10-22  -           2026-11-01
- * L013  Warm  no chat (IndiaMART, 2 days)                 2026-10-26  -           2026-10-31
- * L014  Warm  no chat (Cold call, 2 days)                2026-10-26  -           2026-10-31
- * L015  Warm  "call me on 29 Oct" (Hinglish)             2026-10-23  2026-10-29  2026-10-29
- * L016  Warm  no chat (IndiaMART, 3 days)                2026-10-25  -           2026-10-31
- * L017  Warm  price too high; compares with SealRite     2026-10-09  -           2026-10-12
- * L018  Hot   quote sent; "we decide by 5 Nov"           2026-10-14  -           2026-10-14
- * L019  Warm  "call me on 3 Nov"                         2026-10-13  2026-11-03  2026-11-03
- * L020  Warm  interested, no timeline                    2026-10-03  -           2026-10-06
- * L021  Cold  no chat (Trade show)                       2026-09-20  -           2026-11-07
- * L022  Cold  no chat (Cold call)                        2026-09-30  -           2026-11-07
+ * L001  Hot   asks for quote; delivery and payment terms 2026-10-29  -           2026-10-29
+ * L002  Hot   says "send PI" (Hinglish)                  2026-10-29  -           2026-10-29
+ * L003  Warm  no chat (WhatsApp, 0 days)                 2026-10-29  -           2026-11-01
+ * L004  Warm  asks for brochure and video; no timeline   2026-10-29  -           2026-11-01
+ * L005  Warm  "will discuss internally"                  2026-10-26  -           2026-10-29
+ * L006  Warm  no chat (Website form, 3 days)             2026-10-26  -           2026-11-01
+ * L007  Warm  MAIN-FLOW lead: no buying signal, recent   2026-10-28  -           2026-10-31
+ * L008  Warm  no chat (Referral, 2 days)                 2026-10-27  -           2026-11-01
+ * L009  Cold  "not now, next quarter"; budget used up    2026-10-25  -           2026-11-04
+ * L010  Warm  no chat (Referral, 1 day)                  2026-10-28  -           2026-11-01
+ * L011  Cold  no reply to last 2 rep messages (Hinglish) 2026-10-21  -           2026-10-31
+ * L012  Cold  budget freeze                              2026-10-23  -           2026-11-02
+ * L013  Warm  no chat (IndiaMART, 2 days)                 2026-10-27  -           2026-11-01
+ * L014  Warm  no chat (Cold call, 2 days)                2026-10-27  -           2026-11-01
+ * L015  Warm  "call me on 30 Oct" (Hinglish)             2026-10-24  2026-10-30  2026-10-30
+ * L016  Warm  no chat (IndiaMART, 3 days)                2026-10-26  -           2026-11-01
+ * L017  Warm  price too high; compares with SealRite     2026-10-10  -           2026-10-13
+ * L018  Hot   quote sent; "we decide by 6 Nov"           2026-10-15  -           2026-10-15
+ * L019  Warm  "call me on 4 Nov"                         2026-10-14  2026-11-04  2026-11-04
+ * L020  Warm  interested, no timeline                    2026-10-04  -           2026-10-07
+ * L021  Cold  no chat (Trade show)                       2026-09-21  -           2026-11-08
+ * L022  Cold  no chat (Cold call)                        2026-10-01  -           2026-11-08
  *
- * Load day (2026-10-28), from the table above:
- *   Overdue (follow-up before 28 Oct): L017, L018, L020 = 3
- *   Due today (follow-up on 28 Oct):   L001, L002, L005 = 3
- *   The main-flow lead L007 is due 30 Oct, so it is not on the Today list.
+ * Load day (2026-10-29), from the table above:
+ *   Overdue (follow-up before 29 Oct): L017, L018, L020 = 3
+ *   Due today (follow-up on 29 Oct):   L001, L002, L005 = 3
+ *   The main-flow lead L007 is due 31 Oct, so it is not on the Today list.
  *   Adding a quote request makes it Hot (+0 from its new contact date).
  *
  * Case index: Hot quote L001; send PI L002; terms L001; decision date L018;
@@ -51,28 +51,28 @@ import { DATA_DATE, REPS, SOURCES } from "../lib/constants";
 type Row = [id: string, name: string, company: string, source: (typeof SOURCES)[number], last: string, rep: number, product: string];
 
 const ROWS: Row[] = [
-  ["L001", "Dhruv Malhotra", "Brightleaf Snacks", "Trade show", "2026-10-28", 0, "carton sealer"],
-  ["L002", "Kavita Joshi", "Sundrop Dairy Products", "Referral", "2026-10-28", 1, "case erector"],
-  ["L003", "Manish Ahuja", "Zestora Beverages", "WhatsApp", "2026-10-28", 2, "shrink wrapper"],
-  ["L004", "Pooja Bansal", "Nimbus Pharma Labs", "Website form", "2026-10-28", 3, "labelling machine"],
-  ["L005", "Rohit Chandra", "Veloura Spices", "IndiaMART", "2026-10-25", 4, "strapping machine"],
-  ["L006", "Anita Deshpande", "Cartly Online Retail", "Website form", "2026-10-25", 0, "carton sealer"],
-  ["L007", "Sameer Qureshi", "Aaromax Foods", "Website form", "2026-10-27", 1, "form-fill-seal"],
-  ["L008", "Tanvi Kulkarni", "Boltwave E-commerce", "Referral", "2026-10-26", 2, "case erector"],
-  ["L009", "Farhan Ansari", "Medora Healthcare", "Trade show", "2026-10-24", 3, "labelling machine"],
-  ["L010", "Gaurav Pillai", "Dalmera Dairy", "Referral", "2026-10-27", 4, "strapping machine"],
-  ["L011", "Ritu Saxena", "Crispo Namkeen", "IndiaMART", "2026-10-20", 0, "shrink wrapper"],
-  ["L012", "Harsh Vora", "Lumina Nutraceuticals", "Cold call", "2026-10-22", 1, "labelling machine"],
-  ["L013", "Deepak Naidu", "Freshgrain Foods", "IndiaMART", "2026-10-26", 2, "form-fill-seal"],
-  ["L014", "Shalini Menon", "Orbit Parcel Co", "Cold call", "2026-10-26", 3, "strapping machine"],
-  ["L015", "Arjun Bhatt", "Gulmohar Frozen Foods", "Referral", "2026-10-23", 4, "case erector"],
-  ["L016", "Nisha Rawat", "Pureleaf Tea Co", "IndiaMART", "2026-10-25", 0, "carton sealer"],
-  ["L017", "Vivek Agarwal", "Tastora Biscuits", "Trade show", "2026-10-09", 1, "shrink wrapper"],
-  ["L018", "Meera Iyer", "Quickcart Retail", "WhatsApp", "2026-10-14", 2, "carton sealer"],
-  ["L019", "Sanjay Khanna", "Healwell Pharma", "Website form", "2026-10-13", 3, "form-fill-seal"],
-  ["L020", "Pallavi Sinha", "Amulya Milk Foods", "IndiaMART", "2026-10-03", 4, "strapping machine"],
-  ["L021", "Kunal Thakur", "Zippy Pack Foods", "Trade show", "2026-09-20", 0, "case erector"],
-  ["L022", "Rekha Nambiar", "Vitalis Wellness", "Cold call", "2026-09-30", 1, "labelling machine"],
+  ["L001", "Dhruv Malhotra", "Brightleaf Snacks", "Trade show", "2026-10-29", 0, "carton sealer"],
+  ["L002", "Kavita Joshi", "Sundrop Dairy Products", "Referral", "2026-10-29", 1, "case erector"],
+  ["L003", "Manish Ahuja", "Zestora Beverages", "WhatsApp", "2026-10-29", 2, "shrink wrapper"],
+  ["L004", "Pooja Bansal", "Nimbus Pharma Labs", "Website form", "2026-10-29", 3, "labelling machine"],
+  ["L005", "Rohit Chandra", "Veloura Spices", "IndiaMART", "2026-10-26", 4, "strapping machine"],
+  ["L006", "Anita Deshpande", "Cartly Online Retail", "Website form", "2026-10-26", 0, "carton sealer"],
+  ["L007", "Sameer Qureshi", "Aaromax Foods", "Website form", "2026-10-28", 1, "form-fill-seal"],
+  ["L008", "Tanvi Kulkarni", "Boltwave E-commerce", "Referral", "2026-10-27", 2, "case erector"],
+  ["L009", "Farhan Ansari", "Medora Healthcare", "Trade show", "2026-10-25", 3, "labelling machine"],
+  ["L010", "Gaurav Pillai", "Dalmera Dairy", "Referral", "2026-10-28", 4, "strapping machine"],
+  ["L011", "Ritu Saxena", "Crispo Namkeen", "IndiaMART", "2026-10-21", 0, "shrink wrapper"],
+  ["L012", "Harsh Vora", "Lumina Nutraceuticals", "Cold call", "2026-10-23", 1, "labelling machine"],
+  ["L013", "Deepak Naidu", "Freshgrain Foods", "IndiaMART", "2026-10-27", 2, "form-fill-seal"],
+  ["L014", "Shalini Menon", "Orbit Parcel Co", "Cold call", "2026-10-27", 3, "strapping machine"],
+  ["L015", "Arjun Bhatt", "Gulmohar Frozen Foods", "Referral", "2026-10-24", 4, "case erector"],
+  ["L016", "Nisha Rawat", "Pureleaf Tea Co", "IndiaMART", "2026-10-26", 0, "carton sealer"],
+  ["L017", "Vivek Agarwal", "Tastora Biscuits", "Trade show", "2026-10-10", 1, "shrink wrapper"],
+  ["L018", "Meera Iyer", "Quickcart Retail", "WhatsApp", "2026-10-15", 2, "carton sealer"],
+  ["L019", "Sanjay Khanna", "Healwell Pharma", "Website form", "2026-10-14", 3, "form-fill-seal"],
+  ["L020", "Pallavi Sinha", "Amulya Milk Foods", "IndiaMART", "2026-10-04", 4, "strapping machine"],
+  ["L021", "Kunal Thakur", "Zippy Pack Foods", "Trade show", "2026-09-21", 0, "case erector"],
+  ["L022", "Rekha Nambiar", "Vitalis Wellness", "Cold call", "2026-10-01", 1, "labelling machine"],
 ];
 
 const HEADER = ["lead_id", "name", "company", "phone", "source", "last_contact_date", "rep", "product_interest"];

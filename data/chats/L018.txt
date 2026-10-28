@@ -1,4 +1,4 @@
-[08/10/26, 10:15] Rep (Rahul): Hello Meera, our CS-300 carton sealer suits your order volumes. Shall I send the quote?
-[09/10/26, 13:50] Meera Iyer: Yes please, send the price for 3 units.
-[10/10/26, 11:00] Rep (Rahul): Quote sent. Please check and tell me if you need any change.
-[14/10/26, 17:10] Meera Iyer: Looks fine. We decide by 5 Nov after the board meeting, will confirm then.
+[09/10/26, 10:15] Rep (Rahul): Hello Meera, our CS-300 carton sealer suits your order volumes. Shall I send the quote?
+[10/10/26, 13:50] Meera Iyer: Yes please, send the price for 3 units.
+[11/10/26, 11:00] Rep (Rahul): Quote sent. Please check and tell me if you need any change.
+[15/10/26, 17:10] Meera Iyer: Looks fine. We decide by 6 Nov after the board meeting, will confirm then.
