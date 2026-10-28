@@ -8,7 +8,7 @@ up, so good leads go cold, and the owner can't see which leads are hot or who ne
 
 The goal is one simple screen that tells each rep who to follow up with today, and what to say.
 
-Status: built. Live demo: <LIVE_URL>
+Status: built. Live demo: https://lead-followup-agent-plum.vercel.app
 
 ## Run locally
 
