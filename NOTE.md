@@ -12,6 +12,8 @@ The model does not pick the follow-up date. Code does: the requested date if the
 
 The agent runs when the seed is built, and live only when a message or a lead is added. It never runs on page load, save draft or mark sent. Simple rules run only when the model fails: a buying signal means Hot, two unanswered rep messages or 14 or more days of buyer silence means Cold, anything else is Warm. A lead that already has a result keeps it and shows "agent unavailable".
 
+Writes are capped (200 leads, 100 messages per lead) because the demo is public with no login.
+
 ## AI tools used
 
 Gemini Flash-Lite runs inside the app. Claude Code was used to build it.

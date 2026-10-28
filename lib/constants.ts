@@ -5,3 +5,6 @@ export const SOURCES = ["IndiaMART", "Trade show", "Website form", "Referral", "
 export const DATA_DATE = "2026-10-28";
 export const MODEL = "gemini-3.5-flash-lite";
 export const TAG_RANK: Record<Tag, number> = { Hot: 0, Warm: 1, Cold: 2 };
+// The demo is public with no login, so writes are capped by count.
+export const MAX_LEADS = 200;
+export const MAX_MESSAGES_PER_LEAD = 100;

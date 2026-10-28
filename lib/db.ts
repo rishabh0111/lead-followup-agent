@@ -82,6 +82,16 @@ export async function insertLead(l: Lead): Promise<boolean> {
   return rows.length > 0;
 }
 
+export async function countLeads(): Promise<number> {
+  const rows = await sql`select count(*)::int as n from leads`;
+  return Number(rows[0].n);
+}
+
+export async function countMessages(leadId: string): Promise<number> {
+  const rows = await sql`select count(*)::int as n from messages where lead_id = ${leadId}`;
+  return Number(rows[0].n);
+}
+
 export async function insertMessage(m: Message): Promise<void> {
   await sql`
     insert into messages (lead_id, sent_at, sender, sender_name, text)

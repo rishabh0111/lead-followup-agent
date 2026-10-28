@@ -3,9 +3,9 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { assessWithAgent } from "@/lib/agent";
-import { REPS, SOURCES } from "@/lib/constants";
+import { MAX_LEADS, MAX_MESSAGES_PER_LEAD, REPS, SOURCES } from "@/lib/constants";
 import { isoDate, nowIST, todayIST } from "@/lib/dates";
-import { getLead, insertLead, insertMessage, nextLeadId, saveLead, updateDraft } from "@/lib/db";
+import { countLeads, countMessages, getLead, insertLead, insertMessage, nextLeadId, saveLead, updateDraft } from "@/lib/db";
 import { markSent, resolveAssessment } from "@/lib/lead-rules";
 import { reassess } from "@/lib/leads";
 import type { LeadFields, Message } from "@/lib/types";
@@ -58,6 +58,7 @@ export async function addMessageAction(fd: FormData): Promise<void> {
   const found = await getLead(id);
   if (!found) return;
   const { lead } = found;
+  if ((await countMessages(id)) >= MAX_MESSAGES_PER_LEAD) return;
   const now = new Date();
   try {
     await saveLead({ ...lead, lastContactDate: todayIST(now) });
@@ -94,6 +95,8 @@ export async function addLeadAction(_prev: AddLeadState, fd: FormData): Promise<
   if (!isoDate(lastContactDate)) return { error: "Last contact date is not a valid date." };
   if (lastContactDate > today) return { error: "Last contact date cannot be in the future." };
   if (firstMessage.length > MAX_TEXT) return { error: `First message must be ${MAX_TEXT} characters or fewer.` };
+
+  if ((await countLeads()) >= MAX_LEADS) return { error: "The demo has reached its lead limit." };
 
   // The agent call is slow, so the id is allocated after it, right before the insert.
   // The assessment is made with a blank id and the chat is re-keyed to the real id per attempt.
