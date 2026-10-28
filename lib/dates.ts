@@ -12,6 +12,12 @@ export function todayIST(now: Date = new Date()): string {
   return istFormat.format(now);
 }
 
+/** The current moment as India time, YYYY-MM-DDTHH:MM:SS+05:30. */
+export function nowIST(now: Date = new Date()): string {
+  const shifted = new Date(now.getTime() + 330 * 60_000);
+  return shifted.toISOString().slice(0, 19) + "+05:30";
+}
+
 function toUTC(date: string): number {
   const [y, m, d] = date.split("-").map(Number);
   return Date.UTC(y, m - 1, d);

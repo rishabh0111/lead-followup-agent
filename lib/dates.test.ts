@@ -1,5 +1,9 @@
 import { expect, test } from "vitest";
-import { addDays, daysBetween, isoDate, todayIST } from "./dates";
+import { addDays, daysBetween, isoDate, nowIST, todayIST } from "./dates";
+
+test("nowIST gives an ISO time with the +05:30 offset", () => {
+  expect(nowIST(new Date("2026-10-28T19:00:05.123Z"))).toBe("2026-10-29T00:30:05+05:30");
+});
 
 test("todayIST uses India time, not UTC", () => {
   expect(todayIST(new Date("2026-10-28T19:00:00Z"))).toBe("2026-10-29");
