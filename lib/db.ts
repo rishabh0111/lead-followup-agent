@@ -68,6 +68,20 @@ export async function saveLead(l: Lead): Promise<void> {
       agent_unavailable = excluded.agent_unavailable`;
 }
 
+// Insert only: returns false when the id is already taken, so a racing add never overwrites.
+export async function insertLead(l: Lead): Promise<boolean> {
+  const rows = await sql`
+    insert into leads (id, name, company, phone, source, rep, product_interest,
+      last_contact_date, follow_up_date, tag, reason, requested_date, draft,
+      draft_sent_at, assessed_at, assessed_by, agent_unavailable)
+    values (${l.id}, ${l.name}, ${l.company}, ${l.phone}, ${l.source}, ${l.rep}, ${l.productInterest},
+      ${l.lastContactDate}, ${l.followUpDate}, ${l.tag}, ${l.reason}, ${l.requestedDate}, ${l.draft},
+      ${l.draftSentAt}, ${l.assessedAt}, ${l.assessedBy}, ${l.agentUnavailable})
+    on conflict (id) do nothing
+    returning id`;
+  return rows.length > 0;
+}
+
 export async function insertMessage(m: Message): Promise<void> {
   await sql`
     insert into messages (lead_id, sent_at, sender, sender_name, text)

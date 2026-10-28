@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { assessWithAgent } from "@/lib/agent";
 import { REPS, SOURCES } from "@/lib/constants";
 import { isoDate, nowIST, todayIST } from "@/lib/dates";
-import { getLead, insertMessage, nextLeadId, saveLead, updateDraft } from "@/lib/db";
+import { getLead, insertLead, insertMessage, nextLeadId, saveLead, updateDraft } from "@/lib/db";
 import { markSent, resolveAssessment } from "@/lib/lead-rules";
 import { reassess } from "@/lib/leads";
 import type { LeadFields, Message } from "@/lib/types";
@@ -95,19 +95,29 @@ export async function addLeadAction(_prev: AddLeadState, fd: FormData): Promise<
   if (lastContactDate > today) return { error: "Last contact date cannot be in the future." };
   if (firstMessage.length > MAX_TEXT) return { error: `First message must be ${MAX_TEXT} characters or fewer.` };
 
-  const id = await nextLeadId();
-  const fields: LeadFields = {
-    id, name, company, phone, source, rep,
+  // The agent call is slow, so the id is allocated after it, right before the insert.
+  // The assessment is made with a blank id and the chat is re-keyed to the real id per attempt.
+  const draftFields: LeadFields = {
+    id: "", name, company, phone, source, rep,
     productInterest: productInterest || null,
     lastContactDate,
   };
-  const chat: Message[] = firstMessage
-    ? [{ leadId: id, sentAt: nowIST(now), sender: "buyer", senderName: name, text: firstMessage }]
+  const firstChat: Message[] = firstMessage
+    ? [{ leadId: "", sentAt: nowIST(now), sender: "buyer", senderName: name, text: firstMessage }]
     : [];
-  const agent = await assessWithAgent(fields, chat, today);
-  const lead = resolveAssessment(fields, agent, null, chat, today, now);
-  await saveLead(lead);
-  for (const m of chat) await insertMessage(m);
+  const agent = await assessWithAgent(draftFields, firstChat, today);
+  let id = "";
+  for (let attempt = 0; attempt < 3 && !id; attempt++) {
+    const candidate = await nextLeadId();
+    const fields: LeadFields = { ...draftFields, id: candidate };
+    const chat = firstChat.map((m) => ({ ...m, leadId: candidate }));
+    const lead = resolveAssessment(fields, agent, null, chat, today, now);
+    if (await insertLead(lead)) {
+      id = candidate;
+      for (const m of chat) await insertMessage(m);
+    }
+  }
+  if (!id) return { error: "Could not add the lead, please try again." };
   refresh(id);
   redirect(`/leads/${id}`);
 }
