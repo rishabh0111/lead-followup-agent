@@ -13,13 +13,13 @@ Status: built. Live demo: https://lead-followup-agent-plum.vercel.app
 ## Run locally
 
 1. `npm i`
-2. Copy `.env.example` to `.env.local` and fill in `DATABASE_URL` (a Neon Postgres connection string) and `GEMINI_API_KEY`.
+2. Copy `.env.example` to `.env.local` and fill in `DATABASE_URL` (a Neon Postgres connection string) and `GROQ_API_KEY`.
 3. `npm run db:load`
 4. `npm run dev`
 
 ## Scripts
 
-- `npm run seed` reads `data/leads.xlsx` and `data/chats/`, runs the agent on each lead and writes `data/seed.json`. It needs `GEMINI_API_KEY`. Each lead is assessed as of its own last contact date, so some leads are overdue on load day. `npm run seed -- --only L001 --merge` re-assesses only the chosen leads and merges them into the existing seed file.
+- `npm run seed` reads `data/leads.xlsx` and `data/chats/`, runs the agent on each lead and writes `data/seed.json`. It needs `GROQ_API_KEY` and waits 15 seconds between leads to stay under Groq's free-tier token limit. Each lead is assessed as of its own last contact date, so some leads are overdue on load day. `npm run seed -- --only L001 --merge` re-assesses only the chosen leads and merges them into the existing seed file.
 - `npm run db:load` creates the tables from `db/schema.sql` and loads `data/seed.json` into the database, shifting every date forward so the sample data looks current. Re-run it when the demo dates go stale.
 - `npm test`, `npm run lint` and `npm run build` run the tests, the linter and the production build.
 

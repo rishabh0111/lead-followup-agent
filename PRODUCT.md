@@ -8,7 +8,7 @@ web
 
 ## Stack
 
-Next.js (App Router, TypeScript) on Vercel, Neon Postgres, Gemini Flash-Lite. Settled in
+Next.js (App Router, TypeScript) on Vercel, Neon Postgres, GPT-OSS 120B on Groq. Settled in
 `docs/DECISIONS.md` #1 to #3.
 
 ## Users
