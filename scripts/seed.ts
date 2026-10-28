@@ -12,7 +12,8 @@ import { DATA_DATE } from "../lib/constants";
 import { resolveAssessment } from "../lib/lead-rules";
 import type { Lead, LeadFields, Message, SeedFile } from "../lib/types";
 
-const WAIT_MS = 4000;
+// Groq's free tier allows 8,000 tokens a minute; one lead uses about 2,000.
+const WAIT_MS = 15_000;
 
 function cellText(v: unknown): string {
   if (v === null || v === undefined) return "";
