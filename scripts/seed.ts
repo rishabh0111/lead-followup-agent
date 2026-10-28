@@ -57,8 +57,12 @@ async function main() {
     const file = `data/chats/${f.id}.txt`;
     const chat = existsSync(file) ? parseChat(f.id, readFileSync(file, "utf8")) : [];
     if (k > 0) await sleep(WAIT_MS);
-    const result = await assessWithAgent(f, chat, f.lastContactDate);
-    const lead = resolveAssessment(f, result, null, chat, f.lastContactDate, new Date(`${f.lastContactDate}T12:00:00+05:30`));
+    // A lead with a chat is assessed as of its last contact (the chat ends there). A lead with no
+    // chat has nothing dated, so it is assessed as of DATA_DATE; otherwise it would see "0 days
+    // since last contact" and clash with its overdue follow-up on the Today list.
+    const asOf = chat.length === 0 ? DATA_DATE : f.lastContactDate;
+    const result = await assessWithAgent(f, chat, asOf);
+    const lead = resolveAssessment(f, result, null, chat, asOf, new Date(`${asOf}T12:00:00+05:30`));
     leads.push(lead);
     messages.push(...chat);
     console.log(`${lead.id} ${lead.tag} ${lead.assessedBy} ${lead.followUpDate} ${lead.reason}`);

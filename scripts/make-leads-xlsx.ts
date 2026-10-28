@@ -7,8 +7,8 @@
  *
  * Each lead is scheduled as schedule(intendedTag, requestedDate, lastContact):
  * Hot +0, Warm +3, Cold +10 days, or the requested date if there is one.
- * No-chat leads are assessed as of their own last contact (0 days), so they
- * come out Warm.
+ * No-chat leads are assessed as of DATA_DATE, so their follow-up is today +
+ * the tag offset: Warm 2026-10-31, and the stale ones (L021, L022) Cold 2026-11-07.
  *
  * ID    tag   case                                      last        requested   follow-up
  * L001  Hot   asks for quote; delivery and payment terms 2026-10-28  -           2026-10-28
@@ -16,27 +16,27 @@
  * L003  Warm  no chat (WhatsApp, 0 days)                 2026-10-28  -           2026-10-31
  * L004  Warm  asks for brochure and video; no timeline   2026-10-28  -           2026-10-31
  * L005  Warm  "will discuss internally"                  2026-10-25  -           2026-10-28
- * L006  Warm  no chat (Website form, 3 days)             2026-10-25  -           2026-10-28
+ * L006  Warm  no chat (Website form, 3 days)             2026-10-25  -           2026-10-31
  * L007  Warm  MAIN-FLOW lead: no buying signal, recent   2026-10-27  -           2026-10-30
- * L008  Warm  no chat (Referral, 2 days)                 2026-10-26  -           2026-10-29
+ * L008  Warm  no chat (Referral, 2 days)                 2026-10-26  -           2026-10-31
  * L009  Cold  "not now, next quarter"; budget used up    2026-10-24  -           2026-11-03
- * L010  Warm  no chat (Referral, 1 day)                  2026-10-27  -           2026-10-30
+ * L010  Warm  no chat (Referral, 1 day)                  2026-10-27  -           2026-10-31
  * L011  Cold  no reply to last 2 rep messages (Hinglish) 2026-10-20  -           2026-10-30
  * L012  Cold  budget freeze                              2026-10-22  -           2026-11-01
- * L013  Warm  no chat (IndiaMART, 2 days)                 2026-10-26  -           2026-10-29
- * L014  Warm  no chat (Cold call, 2 days)                2026-10-26  -           2026-10-29
+ * L013  Warm  no chat (IndiaMART, 2 days)                 2026-10-26  -           2026-10-31
+ * L014  Warm  no chat (Cold call, 2 days)                2026-10-26  -           2026-10-31
  * L015  Warm  "call me on 29 Oct" (Hinglish)             2026-10-23  2026-10-29  2026-10-29
- * L016  Warm  no chat (IndiaMART, 3 days)                2026-10-25  -           2026-10-28
+ * L016  Warm  no chat (IndiaMART, 3 days)                2026-10-25  -           2026-10-31
  * L017  Warm  price too high; compares with SealRite     2026-10-09  -           2026-10-12
  * L018  Hot   quote sent; "we decide by 5 Nov"           2026-10-14  -           2026-10-14
  * L019  Warm  "call me on 3 Nov"                         2026-10-13  2026-11-03  2026-11-03
  * L020  Warm  interested, no timeline                    2026-10-03  -           2026-10-06
- * L021  Warm  no chat (Trade show)                       2026-09-20  -           2026-09-23
- * L022  Warm  no chat (Cold call)                        2026-09-30  -           2026-10-03
+ * L021  Cold  no chat (Trade show)                       2026-09-20  -           2026-11-07
+ * L022  Cold  no chat (Cold call)                        2026-09-30  -           2026-11-07
  *
  * Load day (2026-10-28), from the table above:
- *   Overdue (follow-up before 28 Oct): L017, L018, L020, L021, L022 = 5
- *   Due today (follow-up on 28 Oct):   L001, L002, L005, L006, L016 = 5
+ *   Overdue (follow-up before 28 Oct): L017, L018, L020 = 3
+ *   Due today (follow-up on 28 Oct):   L001, L002, L005 = 3
  *   The main-flow lead L007 is due 30 Oct, so it is not on the Today list.
  *   Adding a quote request makes it Hot (+0 from its new contact date).
  *
