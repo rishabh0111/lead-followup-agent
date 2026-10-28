@@ -1,0 +1,12 @@
+{
+  "source_mockup": null,
+  "source_plan": "DESIGN.md; docs/designs/design-system-20261028/preview.html (approved preview)",
+  "mode": "plan-driven",
+  "html_file": "docs/designs/add-lead-20261028/finalized.html",
+  "pretext_tier": "simple layout: prepare() + layout() grows the first-message textarea",
+  "framework": "vanilla",
+  "iterations": 1,
+  "date": "2026-10-28T09:29:53Z",
+  "screen": "add-lead",
+  "branch": "main"
+}

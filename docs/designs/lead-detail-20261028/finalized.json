@@ -1,0 +1,12 @@
+{
+  "source_mockup": null,
+  "source_plan": "DESIGN.md; docs/designs/design-system-20261028/preview.html (approved preview)",
+  "mode": "plan-driven",
+  "html_file": "docs/designs/lead-detail-20261028/finalized.html",
+  "pretext_tier": "chat: prepareWithSegments() + walkLineRanges() shrink-wraps bubbles and grows the draft and message textareas",
+  "framework": "vanilla",
+  "iterations": 1,
+  "date": "2026-10-28T09:27:29Z",
+  "screen": "lead-detail",
+  "branch": "main"
+}

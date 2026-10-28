@@ -1,0 +1,12 @@
+{
+  "source_mockup": null,
+  "source_plan": "DESIGN.md; docs/designs/design-system-20261028/preview.html (approved preview)",
+  "mode": "plan-driven",
+  "html_file": "docs/designs/today-list-20261028/finalized.html",
+  "pretext_tier": "card/grid: prepare() + layout() sizing each reason to its line count, clamped at 2 lines (laptop, tablet) or 3 (phone)",
+  "framework": "vanilla",
+  "iterations": 1,
+  "date": "2026-10-28T09:24:31Z",
+  "screen": "today-list",
+  "branch": "main"
+}
