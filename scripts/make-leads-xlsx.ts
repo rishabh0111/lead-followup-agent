@@ -7,8 +7,8 @@
  *
  * Each lead is scheduled as schedule(intendedTag, requestedDate, lastContact):
  * Hot +0, Warm +3, Cold +10 days, or the requested date if there is one.
- * No-chat tags follow the fallback: Cold at 14+ days (or 8+ for IndiaMART /
- * Cold call), otherwise Warm.
+ * No-chat leads are assessed as of their own last contact (0 days), so they
+ * come out Warm.
  *
  * ID    tag   case                                      last        requested   follow-up
  * L001  Hot   asks for quote; delivery and payment terms 2026-10-28  -           2026-10-28
@@ -23,16 +23,16 @@
  * L010  Warm  no chat (Referral, 1 day)                  2026-10-27  -           2026-10-30
  * L011  Cold  no reply to last 2 rep messages (Hinglish) 2026-10-20  -           2026-10-30
  * L012  Cold  budget freeze                              2026-10-22  -           2026-11-01
- * L013  Cold  no chat (IndiaMART, 9 days)                2026-10-19  -           2026-10-29
- * L014  Cold  no chat (Cold call, 8 days)                2026-10-20  -           2026-10-30
+ * L013  Warm  no chat (IndiaMART, 2 days)                 2026-10-26  -           2026-10-29
+ * L014  Warm  no chat (Cold call, 2 days)                2026-10-26  -           2026-10-29
  * L015  Warm  "call me on 29 Oct" (Hinglish)             2026-10-23  2026-10-29  2026-10-29
- * L016  Cold  no chat (IndiaMART, 10 days)               2026-10-18  -           2026-10-28
+ * L016  Warm  no chat (IndiaMART, 3 days)                2026-10-25  -           2026-10-28
  * L017  Warm  price too high; compares with SealRite     2026-10-09  -           2026-10-12
  * L018  Hot   quote sent; "we decide by 5 Nov"           2026-10-14  -           2026-10-14
  * L019  Warm  "call me on 3 Nov"                         2026-10-13  2026-11-03  2026-11-03
  * L020  Warm  interested, no timeline                    2026-10-03  -           2026-10-06
- * L021  Cold  no chat (Trade show, 38 days)              2026-09-20  -           2026-09-30
- * L022  Cold  no chat (Cold call, 28 days)               2026-09-30  -           2026-10-10
+ * L021  Warm  no chat (Trade show)                       2026-09-20  -           2026-09-23
+ * L022  Warm  no chat (Cold call)                        2026-09-30  -           2026-10-03
  *
  * Load day (2026-10-28), from the table above:
  *   Overdue (follow-up before 28 Oct): L017, L018, L020, L021, L022 = 5
@@ -63,10 +63,10 @@ const ROWS: Row[] = [
   ["L010", "Gaurav Pillai", "Dalmera Dairy", "Referral", "2026-10-27", 4, "strapping machine"],
   ["L011", "Ritu Saxena", "Crispo Namkeen", "IndiaMART", "2026-10-20", 0, "shrink wrapper"],
   ["L012", "Harsh Vora", "Lumina Nutraceuticals", "Cold call", "2026-10-22", 1, "labelling machine"],
-  ["L013", "Deepak Naidu", "Freshgrain Foods", "IndiaMART", "2026-10-19", 2, "form-fill-seal"],
-  ["L014", "Shalini Menon", "Orbit Parcel Co", "Cold call", "2026-10-20", 3, "strapping machine"],
+  ["L013", "Deepak Naidu", "Freshgrain Foods", "IndiaMART", "2026-10-26", 2, "form-fill-seal"],
+  ["L014", "Shalini Menon", "Orbit Parcel Co", "Cold call", "2026-10-26", 3, "strapping machine"],
   ["L015", "Arjun Bhatt", "Gulmohar Frozen Foods", "Referral", "2026-10-23", 4, "case erector"],
-  ["L016", "Nisha Rawat", "Pureleaf Tea Co", "IndiaMART", "2026-10-18", 0, "carton sealer"],
+  ["L016", "Nisha Rawat", "Pureleaf Tea Co", "IndiaMART", "2026-10-25", 0, "carton sealer"],
   ["L017", "Vivek Agarwal", "Tastora Biscuits", "Trade show", "2026-10-09", 1, "shrink wrapper"],
   ["L018", "Meera Iyer", "Quickcart Retail", "WhatsApp", "2026-10-14", 2, "carton sealer"],
   ["L019", "Sanjay Khanna", "Healwell Pharma", "Website form", "2026-10-13", 3, "form-fill-seal"],

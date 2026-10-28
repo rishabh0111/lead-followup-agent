@@ -9,3 +9,4 @@ export interface Lead extends LeadFields {
   assessedAt: string; assessedBy: "agent" | "rules"; agentUnavailable: boolean;
 }
 export type Urgency = "overdue" | "today" | "later";
+export interface SeedFile { dataDate: string; leads: Lead[]; messages: Message[] }
