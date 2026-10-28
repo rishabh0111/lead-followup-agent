@@ -1,69 +1,52 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import Link from "next/link";
+import { REPS } from "@/lib/constants";
+import { todayIST } from "@/lib/dates";
+import { getLeads } from "@/lib/db";
+import { formatDay } from "@/lib/format";
+import { classify, order } from "@/lib/lead-rules";
+import { AppHeader } from "./components/AppHeader";
+import { LeadList } from "./components/LeadList";
+import { RepFilter } from "./components/RepFilter";
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+
+export default async function TodayPage({ searchParams }: PageProps<"/">) {
+  const raw = (await searchParams).rep;
+  const rep = typeof raw === "string" && (REPS as readonly string[]).includes(raw) ? raw : "";
+  const today = todayIST();
+  const lists = order(await getLeads(rep || undefined), today);
+  const overdue = lists.today.filter((l) => classify(l, today) === "overdue").length;
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>
-            To get started, edit the{" "}
-            <code className={styles.code}>page.tsx</code> file.
-          </h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <>
+      <AppHeader>
+        <RepFilter rep={rep} />
+        <Link className="btn btn-primary" href="/leads/new">Add lead</Link>
+      </AppHeader>
+      <main>
+        <div className="day">
+          <h1>{formatDay(today)}</h1>
+          <p className="count">
+            <b>{lists.today.length === 0 ? "No one to contact today" : `${lists.today.length} to contact today`}</b>
+            {overdue > 0 && <span className="od"> · {overdue} overdue</span>}
           </p>
         </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+
+        <section aria-labelledby="h-today">
+          <h2 className="section-head" id="h-today">Today</h2>
+          {lists.today.length === 0
+            ? <p className="empty">No one to contact today.</p>
+            : <LeadList leads={lists.today} today={today} showRep={!rep} />}
+        </section>
+
+        {lists.later.length > 0 && (
+          <section className="section-later" aria-labelledby="h-later">
+            <h2 className="section-head" id="h-later">Later</h2>
+            <LeadList leads={lists.later} today={today} showRep={!rep} />
+          </section>
+        )}
+        <div className="list-end" />
       </main>
-    </div>
+    </>
   );
 }
